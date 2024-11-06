@@ -1,14 +1,17 @@
 import pandas as pd
-from utils import log_exception
+from utils import exception_handler
 
 
-@log_exception
+@exception_handler
 def load_data(url: str):
-    df = pd.read_csv(url)
-    return df
+    try:
+        df = pd.read_csv(url)
+        return df
+    except Exception as e:
+        return pd.DataFrame()
 
 
-@log_exception
+@exception_handler
 def get_items_above_q1(df: pd.DataFrame, category: str):
     q1 = df[category].quantile(0.1)
     low_quantity_df = df[df[category] < q1]
