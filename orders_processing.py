@@ -22,15 +22,26 @@ def process_order(inventory: pd.DataFrame, item_code: int, quantity_ordered: int
         return None
     
     inventory.loc[item_code, 'Quantity in Stock'] -= quantity_ordered
-    
+    return inventory
     
 
-
-"""
-6. **Генерация отчёта** — **`Участник 1`**
-   - Сформируй отчёт для менеджера:
-     - общее количество товаров на складе,
-     - товары с критическими запасами,
-     - рекомендации по закупкам.
-   - Отчёт должен быть сохранен в формате `.txt` и автоматически обновляться ежедневно.
-"""
+def generate_report(inventory):
+    """
+    6. **Генерация отчёта**
+    - Сформируй отчёт для менеджера:
+        - общее количество товаров на складе,
+        - товары с критическими запасами,
+        - рекомендации по закупкам.
+    - Отчёт должен быть сохранен в формате `.txt` и автоматически обновляться ежедневно.
+    """
+    
+    # sort inventory by quantity in stock
+    inventory = inventory.sort_values(by=['Quantity in Stock'], ascending=True)
+    try:
+        with open('report.txt', 'w+') as f:
+            f.write(f'Total items in stock: {inventory["Quantity in Stock"].sum()}\n')
+            f.write(f'Critical items: {inventory.loc[inventory["Quantity in Stock"] < 100, "Name"].values}\n')
+            f.write(f'Recommendations: {inventory.loc[inventory["Quantity in Stock"] < 150, "Name"].values}')
+    except Exception as e:
+        raise e
+    
