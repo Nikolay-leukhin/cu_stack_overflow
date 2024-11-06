@@ -1,7 +1,9 @@
 import numpy as np
 import pandas as pd
+from utils import exception_handler
 
 
+@exception_handler
 def process_order(inventory: pd.DataFrame, item_code: int, quantity_ordered: int, date: str):
     """
     2. **Обработка заказов**
@@ -24,7 +26,7 @@ def process_order(inventory: pd.DataFrame, item_code: int, quantity_ordered: int
     inventory.loc[item_code, 'Quantity in Stock'] -= quantity_ordered
     return inventory
     
-
+@exception_handler
 def generate_report(inventory):
     """
     6. **Генерация отчёта**
