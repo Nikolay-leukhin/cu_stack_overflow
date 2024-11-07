@@ -12,7 +12,8 @@ for day in days:
     print("Day: ", day)
     orders = load_data(url=f'data/orders_2023-09-0{day}.csv')
     for ind, order in orders.iterrows():
-        print(order)
-        # if not process_order(df, *order):
-        #     print("")
-    # generate_report(df)
+        # print(order.tolist())
+        if not process_order(df, *order.tolist()):
+            print("not processed")
+        # logging: order.tolist()
+    generate_report(df, f'report_{day}.txt')
