@@ -27,7 +27,7 @@ def process_order(inventory: pd.DataFrame, item_code: int, quantity_ordered: int
     return inventory
     
 @exception_handler
-def generate_report(inventory):
+def generate_report(inventory, filename: str):
     """
     6. **Генерация отчёта**
     - Сформируй отчёт для менеджера:
@@ -40,7 +40,7 @@ def generate_report(inventory):
     # sort inventory by quantity in stock
     inventory = inventory.sort_values(by=['Quantity in Stock'], ascending=True)
     try:
-        with open('report.txt', 'w+') as f:
+        with open(filename, 'w+') as f:
             f.write(f'Total items in stock: {inventory["Quantity in Stock"].sum()}\n')
             f.write(f'Critical items: {inventory.loc[inventory["Quantity in Stock"] < 100, "Name"].values}\n')
             f.write(f'Recommendations: {inventory.loc[inventory["Quantity in Stock"] < 150, "Name"].values}')
